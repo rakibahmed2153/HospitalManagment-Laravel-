@@ -27,12 +27,12 @@
                            <label>Address</label>
                                <input type="text" class="form-control" name="address" placeholder="Enter Your Address">
                            <br>
-   								<label>Department</label>
+   								<label>Doctor Name</label>
    								<br>
                            
-   								    <select name="dept" class="custom-select"  style="width: 100%;">
+   								    <select name="doctorName" class="custom-select"  style="width: 100%;">
                                  @foreach($depart as $d)
-   										<option value="{{$d['deptName']}}">{{$d['deptName']}}</option>
+   										<option value="{{$d['name']}}">{{$d['name']}}</option>
                                   @endforeach   
    									</select>
                           

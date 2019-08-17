@@ -180,7 +180,7 @@
 				@if($u['type'] == 'doctor')
 				<div class="col-lg-3 team_col">
 					<div class="team_member">
-						<div class="team_member_image d-flex flex-column align-items-center justify-content-end"><img src="{{asset('upload')}}/users/{{$u['username']}}.jpg" alt="Profile Pic"></div>
+						<div class="team_member_image d-flex flex-column align-items-center justify-content-end"><img src="{{asset('upload')}}/users/{{$u['username']}}.jpeg" alt="Profile Pic"></div>
 						<div class="team_member_info">
 							<div class="team_member_name">{{$u['name']}}</div>
 							<div class="team_member_title">{{$u['department']}}</div>

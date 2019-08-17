@@ -20,7 +20,7 @@ class HomeController extends Controller
        
     }
     public function appoint(){
-        $dept = Department::all();
+        $dept = User::all()->where('type','doctor');
     	return view('home.Appoint',['depart' => $dept]);
     }
 
@@ -56,12 +56,12 @@ class HomeController extends Controller
             $user->validation = 'invalid';
             $user->type = 'patient';
             $user->name = $req->name;
-            $user->department = $req->dept;
+            $user->doctorName = $req->doctorName;
             $user->number = $req->number;
             $user->email = $req->email;
             $user->problem = $req->problem;
             $user->address = $req->address;
-             $file->move('upload/users', $req->username.'.jpg');
+             $file->move('upload/users', $req->username.'.jpeg');
             $user->save();
         
             $req->session()->flash('msg', "Appoint Request Successfully Send.

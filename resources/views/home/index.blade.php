@@ -176,7 +176,7 @@
 				@foreach ($department as $d)
 				<div class="col-lg-3 col-md-6 dept_col">
 					<div class="dept">
-						<div class="dept_image"><img src="{{asset('upload')}}/departments/{{$d['id']}}.jpg" alt=""></div>
+						<div class="dept_image"><img src="{{asset('upload')}}/departments/{{$d['deptName']}}.jpeg" alt="Department"></div>
 						<div class="dept_content text-center">
 							<div class="dept_title">{{$d['deptName']}}</div>
 							<div class="dept_subtitle">{{$d['name']}}</div>
@@ -205,7 +205,7 @@
 				<div class="col-lg-4 col-md-6 service_col">
 					<a href="services.html">
 						<div class="service text-center trans_200">
-							<div class="service_icon"><img class="svg" src="{{asset('upload')}}/services/{{$s['id']}}.PNG" alt=""></div>
+							<div class="service_icon"><img class="svg" src="{{asset('upload')}}/services/{{$s['name']}}.PNG" alt="Services"></div>
 							<div class="service_title trans_200">{{$s['name']}}</div>
 							<div class="service_text">
 								<p>{{$s['details']}}</p>

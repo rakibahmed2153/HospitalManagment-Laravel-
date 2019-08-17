@@ -44,7 +44,7 @@
 				<div class="col-lg-4 col-md-6 service_col">
 					<a href="#">
 						<div class="service text-center trans_200">
-							<div class="service_icon"><img class="svg" src="{{asset('upload')}}/services/{{$s['id']}}.PNG" alt=""></div>
+							<div class="service_icon"><img class="svg" src="{{asset('upload')}}/services/{{$s['name']}}.PNG" alt=""></div>
 							<div class="service_title trans_200">{{$s['name']}}</div>
 							<div class="service_text">
 								<p>{{$s['details']}}</p>
