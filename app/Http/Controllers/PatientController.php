@@ -199,6 +199,36 @@ class PatientController extends Controller
        
     }
 
+    public function review()
+    {
+         return view('patient.addReview');
+    }
+
+public function GiveReview(Request $req)
+    {
+        $validation = Validator::make($req->all(), [
+
+            'review'=>'required',
+
+        ])->validate();
+
+        $sid = $req->session()->get('id');
+
+        $user = User::find($sid);
+        
+                
+                $user->review = $req->review;
+                
+                $user->save();
+                
+                $req->session()->flash('msg', "Review Successfully Added");
+                
+                return redirect()->route('patient.review');
+ 
+        
+
+       
+    }
 
 
 

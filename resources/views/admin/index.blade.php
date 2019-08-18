@@ -107,7 +107,7 @@
                                     <div class="dash-tile-options">
                                         <div class="btn-group">
                                             <a href="{{route('admin.adddepart')}}" class="btn btn-default" data-toggle="tooltip" title="Add Department"><i class="fa fa-cog"></i></a>
-                                            <a href="{{route('admin.deptlist')}}" class="btn btn-default" data-toggle="tooltip" title="Department List"><i class="fa fa-th"></i></a>
+                                            <a href="{{route('admin.departlist')}}" class="btn btn-default" data-toggle="tooltip" title="Department List"><i class="fa fa-th"></i></a>
                                         </div>
                                     </div>
                                     Departments

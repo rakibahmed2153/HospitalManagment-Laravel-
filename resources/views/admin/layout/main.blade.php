@@ -37,6 +37,7 @@
         <link rel="stylesheet" href="css/main.css">
 
         <!-- Load a specific file here from css/themes/ folder to alter the default theme of the template -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
         <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
         <link rel="stylesheet" href="css/themes.css">
@@ -121,7 +122,7 @@
                                         <a href="{{route('admin.adddepart')}}"><i class="fa fa-pencil"></i>Create Department</a>
                                     </li>
                                     <li>
-                                        <a href="{{route('admin.deptlist')}}"><i class="fa fa-th"></i>Department List</a>
+                                        <a href="{{route('admin.departlist')}}"><i class="fa fa-th"></i>Department List</a>
                                     </li>
                                     
                                 </ul>
@@ -209,11 +210,8 @@
                             
                             
                             <li>
-                                <a href="#"><i class="fa fa-leaf"></i>Components</a>
+                                <a href="#"><i class="fa fa-leaf"></i>Others</a>
                                 <ul>
-                                 <li>
-                                        <a href="page_gallery.html"><i class="fa fa-picture-o"></i>Gallery</a>
-                                    </li>
                                     <li>
                                         <a href="{{route('admin.inbox')}}"><i class="fa fa-envelope"></i>Inbox</a>
                                     </li>
@@ -221,10 +219,7 @@
                                         <a href="{{route('admin.appointreq')}}"><i class="fa fa-bar-chart-o"></i>Appoint Request</a>
                                     </li>
                                     <li>
-                                        <a href="page_calendar.html"><i class="fa fa-calendar"></i>Calendar</a>
-                                    </li>
-                                    <li>
-                                        <a href="page_maps.html"><i class="fa fa-map-marker"></i>Maps</a>
+                                        <a href="{{route('admin.review')}}"><i class="fa fa-calendar"></i>Review</a>
                                     </li>
                                     </ul>
                             </li>
@@ -266,12 +261,14 @@
         <!-- Include Jquery library from Google's CDN but if something goes wrong get Jquery from local file (Remove 'http:' if you have SSL) -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
         <script>!window.jQuery && document.write(decodeURI('%3Cscript src="js/vendor/jquery-1.11.1.min.js"%3E%3C/script%3E'));</script> 
-
+   
+           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <!-- Bootstrap.js -->
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <!-- Jquery plugins and custom javascript code -->
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        @yield('Script')
     </body>
 </html>

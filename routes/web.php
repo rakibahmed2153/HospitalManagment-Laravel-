@@ -47,8 +47,10 @@ Route::post('/admin/EditDepartment/{sid}', 'AdminController@editDepart');
 Route::get('/admin/DepartmentDelete/{sid}', 'AdminController@deletedept')->name('admin.deletedept');
 Route::post('/admin/DepartmentDelete/{sid}', 'AdminController@destroydept');
 
-Route::get('/admin/DepartmentList', 'AdminController@deptlist')->name('admin.deptlist');
-//Route::get('/admin/DepartmentList/action', 'AdminController@action')->name('admin.action');
+Route::get('/admin/DepartList', 'AdminController@departlist')->name('admin.departlist');
+Route::get('/admin/DepartList/search','AdminController@search')->name('admin.search');
+
+//Route::get('/admin/DepartmentList/search', 'AdminController@search');
 
 //Docotor
 Route::get('/admin/Doctor', 'AdminController@adddoctor')->name('admin.adddoctor');
@@ -62,6 +64,9 @@ Route::post('/admin/DoctorDelete/{sid}', 'AdminController@destroydoct');
 
 Route::get('/admin/DoctorList', 'AdminController@doctorlist')->name('admin.doctorlist');
 
+Route::get('/admin/DoctorList/search','AdminController@searchdoc')->name('admin.searchdoc');
+
+
 //Nurse
 Route::get('/admin/Nurse', 'AdminController@addnurse')->name('admin.addnurse');
 Route::post('/admin/Nurse', 'AdminController@nurseCreate');
@@ -73,6 +78,8 @@ Route::get('/admin/NurseDelete/{sid}', 'AdminController@deletenurse')->name('adm
 Route::post('/admin/NurseDelete/{sid}', 'AdminController@destroynurse');
 
 Route::get('/admin/NurseList', 'AdminController@nurselist')->name('admin.nurselist');
+Route::get('/admin/NurseList/search','AdminController@searchnurse')->name('admin.searchnurse');
+
 
 //Admin
 Route::get('/admin/Admin', 'AdminController@addadmin')->name('admin.addadmin');
@@ -85,12 +92,14 @@ Route::get('/admin/AdminDelete/{sid}', 'AdminController@deleteadmin')->name('adm
 Route::post('/admin/AdminDelete/{sid}', 'AdminController@destroyadmin');
 
 Route::get('/admin/AdminList', 'AdminController@adminlist')->name('admin.adminlist');
+Route::get('/admin/AdminList/search','AdminController@searchadmin')->name('admin.searchadmin');
 
 //Patient
 Route::get('/admin/Patient', 'AdminController@addpatient')->name('admin.addpatient');
 Route::post('/admin/Patient', 'AdminController@patientCreate');
 
 Route::get('/admin/PatientList', 'AdminController@patientlist')->name('admin.patientlist');
+Route::get('/admin/PatientList/search','AdminController@searchpatient')->name('admin.searchpatient');
 
 Route::get('/admin/EditPatient/{sid}', 'AdminController@editpact')->name('admin.editpatient');
 Route::post('/admin/EditPatient/{sid}', 'AdminController@editPatient');
@@ -110,6 +119,7 @@ Route::get('/admin/NoticeDelete/{sid}', 'AdminController@deletenotice')->name('a
 Route::post('/admin/NoticeDelete/{sid}', 'AdminController@destroynotice');
 
 Route::get('/admin/NoticeboardList', 'AdminController@noticelist')->name('admin.noticelist');
+Route::get('/admin/NoticeboardList/search','AdminController@searchnotice')->name('admin.searchnotice');
 
 //Service
 Route::get('/admin/Service', 'AdminController@addservice')->name('admin.addservice');
@@ -122,6 +132,7 @@ Route::get('/admin/ServiceDelete/{sid}', 'AdminController@deleteservice')->name(
 Route::post('/admin/ServiceDelete/{sid}', 'AdminController@destroyservice');
 
 Route::get('/admin/ServiceList', 'AdminController@servicelist')->name('admin.servicelist');
+Route::get('/admin/ServiceList/search','AdminController@searchservice')->name('admin.searchservice');
 
 //Profile
 Route::get('/admin/Profile', 'AdminController@profile')->name('admin.profile');
@@ -134,12 +145,18 @@ Route::post('/admin/ChangePassword', 'AdminController@Password');
 
 //Appointment Request
 Route::get('/admin/AppointRequest', 'AdminController@appointreq')->name('admin.appointreq');
-Route::post('/admin/AppointRequest', 'AdminController@valid');
-Route::get('/admin/AppointRequest/{sid}', 'AdminController@deleteappoint')->name('admin.deleteappoint');
+Route::get('/admin/ValidAppointRequest/{sid}', 'AdminController@valid');
+Route::get('/admin/AppointRequest/search','AdminController@searchappoint')->name('admin.searchappoint');
+
+Route::get('/admin/DeleteAppointRequest/{sid}', 'AdminController@deleteappoint')->name('admin.deleteappoint');
 
 //Contacts
 Route::get('/admin/Inbox','AdminController@inbox')->name('admin.inbox');
 Route::get('/admin/Inbox/{sid}', 'AdminController@deleteinbox')->name('admin.deleteinbox');
+
+//Review
+Route::get('/admin/Review','AdminController@review')->name('admin.review');
+Route::get('/admin/Review/{sid}', 'AdminController@deletereview')->name('admin.deletereview');
 
 //Admin Route Ends
 
@@ -305,6 +322,10 @@ Route::get('/patient/NurseList', 'PatientController@nurselist')->name('patient.n
 //Profile
 Route::get('/patient/Profile', 'PatientController@profile')->name('patient.profile');
 Route::post('/patient/Profile', 'PatientController@editProfile');
+
+//Review
+Route::get('/patient/Review', 'PatientController@review')->name('patient.review');
+Route::post('/patient/Review', 'PatientController@GiveReview');
 
 //Change Password
 Route::get('/patient/ChangePassword', 'PatientController@cngpassword')->name('patient.cngpassword');

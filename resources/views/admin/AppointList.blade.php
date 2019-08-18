@@ -5,7 +5,7 @@
    Appointment Requests
 @endsection
 @section('Search')
-    <form id="sidebar-search" action="page_search_results.html" method="post">
+    <form id="sidebar-search">
             <div class="input-group">
               <input type="text" id="search" name="search" placeholder="Search..">
               <button><i class="fa fa-search"></i></button>
@@ -14,9 +14,9 @@
 @endsection
 @section('Iteams')
                
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-
-<!-- Add Department -->
                   <div class="col-lg-12">
                        <h1 class="text-center">Requested Patient Lists</h1>
                        <hr>
@@ -37,69 +37,36 @@
                             <tbody>
                               
                             
-                          @foreach($appoint as $d)
-                          <form method="post">
-                            @csrf
-                            <tr>
-                              <td>{{$d['id']}}</td>
-                              <td>{{$d['name']}}</td>
-                               <input type="hidden" name="name" value="{{$d['name']}}">
-                              <td>{{$d['doctorName']}}</td>
-                               <input type="hidden" name="doctorName" value="{{$d['doctorName']}}">
-                              <td>{{$d['email']}}</td>
-                               <input type="hidden" name="email" value="{{$d['email']}}">
-                              <td>{{$d['number']}}</td>
-                               <input type="hidden" name="number" value="{{$d['number']}}">
-                              <td>{{$d['address']}}</td>
-                               <input type="hidden" name="address" value="{{$d['address']}}">
-                              <td>
-                                <input type="hidden" name="sid" value="{{$d['id']}}">
-                                <input type="hidden" name="valid" value="valid"> 
-                               
-                               <input type="submit" name="submit" value="Valid" class="btn btn-primary" style="background-color: green;">
-                               <a href="{{route('admin.deleteappoint', $d['id'])}}">
-                                    <input type="button" class="btn btn-primary" value="Delete" style="background-color: red;">
-                                  </a>
-                              </td>
-                            </tr>
-                            </form>
-
-                            
-                            @endforeach 
                             </tbody>
                   </table>
 
                   </div>  
-@endsection
 
-@section('Script')
-   <script>
-    
-    fetch_customer_data();
+                  <script>
+                    $(document).ready(function(){
 
-     $(document).ready(function(){
+                     fetch_customer_data();
 
-         function fetch_customer_data(query == '')
-         {
-           $.ajax({
-               url:"",
-               method:'GET',
-               data:{query:query},
-               dataType:'json'
-               success:function(data)
-               {
-                $('tbody').html(data.table_data);
-               }
+                     function fetch_customer_data(query = '')
+                     {
+                      $.ajax({
+                       url:"{{ route('admin.searchappoint') }}",
+                       method:'GET',
+                       data:{query:query},
+                       dataType:'json',
+                       success:function(data)
+                       {
+                        $('tbody').html(data.table_data);
+                        //$('#total_records').text(data.total_data);
+                       }
+                      })
+                     }
 
-           })
-         }
+                     $(document).on('keyup', '#search', function(){
+                      var query = $(this).val();
+                      fetch_customer_data(query);
+                     });
+                    });
+                    </script>
 
-      })
-
-      $document.on('keyup', '#search',function(){
-        var query = $(this).val();
-        fetch_customer_data(query);
-      })
-
-   </script>
 @endsection

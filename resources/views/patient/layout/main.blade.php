@@ -184,6 +184,10 @@
                                     
                                     </ul>
                             </li>
+                            <li>
+                                <a href="{{route('patient.review')}}"><i class="fa fa-th-list"></i>Give Review</a>
+                            </li>
+                            
 
                             <li>
                                 <a href="{{route('patient.profile')}}"><i class="fa fa-th-list"></i>Manage Profile</a>

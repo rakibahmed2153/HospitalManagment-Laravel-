@@ -37,7 +37,7 @@
   <form method="post">
     @csrf
     <h3>Are You Sure To Delete The Department?</h3>
-    <a href="{{route('admin.deptlist')}}">
+    <a href="{{route('admin.departlist')}}">
       <input type="button" value="Cancel">
     </a>
     <input type="hidden" name="sid" value="{{$d[0]}}">

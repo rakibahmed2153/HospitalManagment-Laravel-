@@ -5,15 +5,17 @@
    Service/ServiceList
 @endsection
 @section('Search')
-   <!-- <form id="sidebar-search" action="page_search_results.html" method="post">
+   <form id="sidebar-search">
             <div class="input-group">
               <input type="text" id="search" name="search" placeholder="Search..">
               <button><i class="fa fa-search"></i></button>
             </div>
-    </form> -->
+    </form> 
 @endsection
 @section('Iteams')
-               
+               <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
                   <div class="col-lg-12">
                        <h1 class="text-center">Service Lists</h1>
                        <hr>
@@ -31,54 +33,37 @@
                             <tbody>
                               
                             
-                          @foreach($service as $d)
-
-                            <tr>
-                              <td>{{$d['id']}}</td>
-                              <td>{{$d['name']}}</td>
-                              <td>{{$d['details']}}</td>
-                              <td>
-                                <a href="{{route('admin.editser', $d['id'])}}" style="color: blue;">Edit</a> | 
-                                <a href="{{route('admin.deleteservice', $d['id'])}}" style="color: blue;">Delete</a>
-                              </td>
-                            </tr>
-
-                            
-                            @endforeach 
                             </tbody>
                   </table>
 
                   </div>  
-@endsection
 
-@section('Script')
-   <script>
-    
-    fetch_customer_data();
+                   
+                  <script>
+                    $(document).ready(function(){
 
-     $(document).ready(function(){
+                     fetch_customer_data();
 
-         function fetch_customer_data(query == '')
-         {
-           $.ajax({
-               url:"",
-               method:'GET',
-               data:{query:query},
-               dataType:'json'
-               success:function(data)
-               {
-                $('tbody').html(data.table_data);
-               }
+                     function fetch_customer_data(query = '')
+                     {
+                      $.ajax({
+                       url:"{{ route('admin.searchservice') }}",
+                       method:'GET',
+                       data:{query:query},
+                       dataType:'json',
+                       success:function(data)
+                       {
+                        $('tbody').html(data.table_data);
+                        //$('#total_records').text(data.total_data);
+                       }
+                      })
+                     }
 
-           })
-         }
+                     $(document).on('keyup', '#search', function(){
+                      var query = $(this).val();
+                      fetch_customer_data(query);
+                     });
+                    });
+                    </script>
 
-      })
-
-      $document.on('keyup', '#search',function(){
-        var query = $(this).val();
-        fetch_customer_data(query);
-      })
-
-   </script>
 @endsection

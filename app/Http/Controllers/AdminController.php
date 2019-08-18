@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -15,13 +14,6 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
 
-	/*public function sessionCheck($req){
-        if($req->session()->has('username')){
-            return true;
-        }else{
-            return false;
-        }
-    }*/
 
     public function index(Request $req)
     {
@@ -104,13 +96,66 @@ class AdminController extends Controller
 	        }    
 		 
     }
-
-    public function deptlist(Request $req)
+    public function departlist(Request $req)
     {
-             $dept = Department::all();
-	            return view('admin.DepartmentList', ['depart' => $dept]);        
+             //$dept = Department::all();
+                return view('admin.DepartmentList');        
     }
 
+    public function search(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+       $data = DB::table('departments')
+         ->where('name', 'like', '%'.$query.'%')
+         ->orWhere('deptName', 'like', '%'.$query.'%')
+         ->get();
+         
+      }
+      else
+      {
+       $data = DB::table('departments')->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->deptName.'</td>
+         <td>'.$row->details.'</td>
+         <td>
+            <a href="/admin/EditDepartment/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/DepartmentDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+        
 
 public function editdept(Request $req, $sid)
     {
@@ -144,7 +189,7 @@ public function editDepart(Request $req, $sid)
 	        
 	            $req->session()->flash('msg', "Department Successfully Updated");
 	            
-		        return redirect()->route('admin.deptlist');
+		        return redirect()->route('admin.departlist');
 
 
 	           
@@ -177,60 +222,10 @@ public function editDepart(Request $req, $sid)
     public function destroydept(Request $req, $sid){
        
         Department::destroy($sid);
-        return redirect()->route('admin.deptlist');
+        return redirect()->route('admin.departlist');
       
     }
 
-public function action(Request $req)
-{
-	if($req->ajax())
-	{
-		$output = '';
-		$query = $req->get('query');
-		if($query != '')
-		{
-              $data = DB::table('departments')
-                      ->where('name', 'like', '%'.$query.'%')
-                      ->orwhere('deptName','like','%'.$query.'%')
-                      ->get();
-		}
-		else
-		{
-			$data = DB::table('departments')
-			        ->get();
-		}
-
-		$total = $data->count();
-		if($total > 0)
-		{
-              foreach ($data as $row) {
-              	 $output = '
-                   <tr>
-                      <td>'.$row->name.'</td>
-                      <td>'.$row->deptName.'</td>
-                      <td>'.$row->details.'</td>
-                       <td>
-                                <a href="{{route(admin.editdept, $row->id])}}" style="color: blue;">Edit</a> | 
-                                <a href="{{route(admin.deletedept, $row->id])}}" style="color: blue;">Delete</a>
-                              </td>
-                   </tr>  
-              	 ';
-              }
-		}
-		else
-		{
-			$output = '
-                 <tr>
-                    <td align="center" colspan="5"> No Data Found</td>
-                 </tr>   
-			';
-		}
-		$data = array('table_data' => $output, );
-
-		echo json_encode($data);
-
-	}
-}
     
     
 //End Department Part
@@ -299,9 +294,67 @@ public function action(Request $req)
 
     public function doctorlist()
     {
-       $doctor = User::all()->where('type','doctor');
-	   return view('admin.DoctorList', ['doct' => $doctor]);    	
+       //$doctor = User::all()->where('type','doctor');
+	   return view('admin.DoctorList');    	
     }
+
+    public function searchdoc(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+        
+       $data = DB::table('users')
+         ->where('type','doctor')
+         ->where('name', 'like', '%'.$query.'%')
+         ->orWhere('email','like','%'.$query.'%')
+         ->get();  
+      }
+      else
+      {
+       $data = User::all()->where('type','doctor');
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->department.'</td>
+         <td>'.$row->email.'</td>
+         <td>'.$row->number.'</td>
+         <td>'.$row->address.'</td>
+         <td>
+            <a href="/admin/EditDoctor/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/DoctorDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="7">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+    
 
     public function editdoct($sid)
     {
@@ -418,9 +471,69 @@ public function action(Request $req)
 
     public function patientlist(Request $req)
     {
-       $patient = User::all()->where('type','patient')->where('validation','valid');;
-	   return view('admin.PatientList', ['patient' => $patient]);
+      // $patient = User::all()->where('type','patient')->where('validation','valid');
+	   return view('admin.PatientList');
     }
+
+    public function searchpatient(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+       $data = DB::table('users')
+         ->where('type','patient')
+         ->where('validation','valid')
+         ->where('name', 'like', '%'.$query.'%')
+         ->get();
+         
+      }
+      else
+      {
+       $data = DB::table('users')
+               ->where('type','patient')->where('validation','valid')
+               ->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->doctorName.'</td>
+         <td>'.$row->email.'</td>
+         <td>'.$row->number.'</td>
+         <td>'.$row->address.'</td>
+         <td>
+            <a href="/admin/EditPatient/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/PatientDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="8">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
 
 	public function editpact($sid)
     {
@@ -539,9 +652,69 @@ public function action(Request $req)
 
     public function nurselist(Request $req)
     {
-    	$nurse = User::all()->where('type','nurse');
-	    return view('admin.NurseList', ['doct' => $nurse]);
+    	//$nurse = User::all()->where('type','nurse');
+	    return view('admin.NurseList');
     }
+    
+    public function searchnurse(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+        
+       $data = DB::table('users')
+         ->where('type','nurse')
+         ->where('validation','valid')
+         ->where('name', 'like', '%'.$query.'%')
+         ->get();  
+      }
+      else
+      {
+       $data = DB::table('users')
+               ->where('type','nurse')->where('validation','valid')
+               ->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->email.'</td>
+         <td>'.$row->number.'</td>
+         <td>'.$row->address.'</td>
+         <td>
+            <a href="/admin/EditNurse/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/NurseDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="7">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+
 
     public function editnur($sid)
     {
@@ -624,10 +797,63 @@ public function action(Request $req)
 
     public function noticelist(Request $req)
     {
-    	$notice = Notice::all();
-    	return view('admin.NoticeList', compact('notice'));
+    	//$notice = Notice::all();
+    	return view('admin.NoticeList');
     }
 
+    public function searchnotice(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+       $data = DB::table('notices')
+         ->where('title', 'like', '%'.$query.'%')
+         ->orWhere('subject', 'like', '%'.$query.'%')
+         ->get();
+         
+      }
+      else
+      {
+       $data = DB::table('notices')->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->title.'</td>
+         <td>'.$row->subject.'</td>
+         <td>'.$row->message.'</td>
+         <td>
+            <a href="/admin/EditNotice/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/NoticeDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
 
     public function editnote($sid)
     {
@@ -735,9 +961,68 @@ public function action(Request $req)
 
     public function adminlist(Request $req)
     {
-    	$admin = User::all()->where('type','admin');
-    	return view('admin.AdminList', compact('admin'));
+    	//$admin = User::all()->where('type','admin');
+    	return view('admin.AdminList');
     }
+
+     public function searchadmin(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+        
+       $data = DB::table('users')
+         ->where('type','admin')
+         ->where('validation','valid')
+         ->where('name', 'like', '%'.$query.'%')
+         ->get();  
+      }
+      else
+      {
+       $data = DB::table('users')
+               ->where('type','admin')->where('validation','valid')
+               ->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->email.'</td>
+         <td>'.$row->number.'</td>
+         <td>'.$row->address.'</td>
+         <td>
+            <a href="/admin/EditAdmin/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/AdminDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="7">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
 
     public function editadm($sid)
     {
@@ -840,9 +1125,64 @@ public function action(Request $req)
 
     public function servicelist(Request $req)
     {
-             $service = Service::all();
-	         return view('admin.ServiceList', ['service' => $service]);        
+             //$service = Service::all();
+	         return view('admin.ServiceList');        
     }
+
+    public function searchservice(Request $request)
+    {
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+        
+       $data = DB::table('services')
+         ->where('name', 'like', '%'.$query.'%')
+         ->get();  
+      }
+      else
+      {
+       $data = DB::table('services')
+               ->orderBy('name','asc')
+               ->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->details.'</td>
+         <td>
+            <a href="/admin/EditService/'.$row->id.'" style="color: blue;">Edit</a> | 
+            <a href="/admin/ServiceDelete/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="4">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
 
  	public function editser(Request $req, $sid)
     {
@@ -986,22 +1326,76 @@ public function action(Request $req)
 
      public function appointreq(Request $req)
     {
-       $appoint = User::all()->where('type','patient')->where('validation','invalid');
-	   return view('admin.AppointList', ['appoint' => $appoint]);
+       //$appoint = User::all()->where('type','patient')->where('validation','invalid');
+	   return view('admin.AppointList');
     	
     }
-
-    public function valid(Request $req)
+    
+    public function searchappoint(Request $request)
     {
-       $sid = $req->sid;
+        if($request->ajax())
+     {
+      $output = '';
+      $query = $request->get('query');
+      if($query != '')
+      {
+        
+       $data = DB::table('users')
+         ->where('type','patient')
+         ->where('validation','invalid')
+         ->where('name', 'like', '%'.$query.'%')
+         ->get();  
+      }
+      else
+      {
+       $data = DB::table('users')
+               ->where('type','patient')->where('validation','invalid')
+               ->get();
+      }
+      $total_row = $data->count();
+      if($total_row > 0)
+      {
+       foreach($data as $row)
+       {
+        $output .= '
+        <tr>
+        <td>'.$row->id.'</td>
+         <td>'.$row->name.'</td>
+         <td>'.$row->doctorName.'</td>
+         <td>'.$row->email.'</td>
+         <td>'.$row->number.'</td>
+         <td>'.$row->address.'</td>
+         <td>
+            <a href="/admin/ValidAppointRequest/'.$row->id.'" style="color: blue;">Valid</a> | 
+            <a href="/admin/DeleteAppointRequest/'.$row->id.'" style="color: blue;">Delete</a>
+                              </td>
+        </tr>
+        ';
+       }
+      }
+      else
+      {
+       $output = '
+       <tr>
+        <td align="center" colspan="8">No Data Found</td>
+       </tr>
+       ';
+      }
+      $data = array(
+       'table_data'  => $output,
+       //'total_data'  => $total_row
+      );
+
+      echo json_encode($data);
+     }
+    }
+
+    public function valid(Request $req, $sid)
+    {
+     // $sid = $req->sid;
        $user = User::find($sid);
 
-	    $user->name = $req->name; 
-	    $user->number = $req->number;
-        $user->email = $req->email;
-	    $user->address = $req->address;
-	    $user->doctorName = $req->doctorName;
-       $user->validation = $req->valid;
+       $user->validation = 'valid';
 	   $user->save();
 	   
 	   return redirect()->route('admin.appointreq');	
@@ -1028,6 +1422,26 @@ public function action(Request $req)
     {
     	Contact::destroy($sid);
         return redirect()->route('admin.inbox');
+      
+    }
+
+    //Contact Part Ends
+
+
+    //Contacts Part Starts
+
+    public function review()
+    {
+        $user = User::all()->where('type','patient');
+        
+        return view('admin.ReviewList',['review'=>$user]);
+        
+    }
+
+    public function deletereview($sid)
+    {
+        Contact::destroy($sid);
+        return redirect()->route('admin.review');
       
     }
 

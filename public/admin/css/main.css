@@ -111,7 +111,7 @@ body {
 }
 
 #page-content {
-    margin: 0 0 0 200px;
+    margin: -20px 0 0 200px;
     padding: 20px;
     background-color: #fff;
     border-left: 1px solid #ccc;

@@ -37,7 +37,9 @@
                            <br>
                            
                          <input type="submit" class="btn btn-primary" name="submit" value="Submit">
-   						 <input style="background-color: red;" type="reset" class="btn btn-primary" name="reset" value="Reset">
+   						 <a href="{{route('admin.departlist')}}">
+      <input type="button" value="Cancel">
+    </a>
    									    
    							      
    							    

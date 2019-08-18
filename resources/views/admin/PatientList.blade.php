@@ -5,7 +5,7 @@
    Patient/PatientList
 @endsection
 @section('Search')
-    <form id="sidebar-search" action="page_search_results.html" method="post">
+    <form id="sidebar-search">
             <div class="input-group">
               <input type="text" id="search" name="search" placeholder="Search..">
               <button><i class="fa fa-search"></i></button>
@@ -14,10 +14,10 @@
 @endsection
 @section('Iteams')
                
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-
-<!-- Add Department -->
-                  <div class="col-lg-12">
+            <div class="col-lg-12">
                        <h1 class="text-center">Patient Lists</h1>
                        <hr>
                           <br>
@@ -30,66 +30,44 @@
                               <td><b>Doctor Name</b></td>
                               <td><b>Email</b></td>
                               <td><b>Phone Number</b></td>
-                              <td><b>Problem</b></td>
                               <td><b>Address</b></td>
                               <td><b>Action</b></td>
                             </tr>
                             </thead>
                             <tbody>
                               
-                            
-                          @foreach($patient as $d)
-
-                            <tr>
-                              <td>{{$d['id']}}</td>
-                              <td>{{$d['name']}}</td>
-                              <td>{{$d['doctorName']}}</td>
-                              <td>{{$d['email']}}</td>
-                              <td>{{$d['number']}}</td>
-                              <td>{{$d['problem']}}</td>
-                              <td>{{$d['address']}}</td>
-                              <td>
-                                <a href="{{route('admin.editpatient', $d['id'])}}" style="color: blue;">Edit</a> | 
-                                <a href="{{route('admin.deletepatient', $d['id'])}}" style="color: blue;">Delete</a>
-                              </td>
-                            </tr>
-
-                            
-                            @endforeach 
                             </tbody>
                   </table>
 
                   </div>  
+
+
+
+                  <script>
+                    $(document).ready(function(){
+
+                     fetch_customer_data();
+
+                     function fetch_customer_data(query = '')
+                     {
+                      $.ajax({
+                       url:"{{ route('admin.searchpatient') }}",
+                       method:'GET',
+                       data:{query:query},
+                       dataType:'json',
+                       success:function(data)
+                       {
+                        $('tbody').html(data.table_data);
+                        //$('#total_records').text(data.total_data);
+                       }
+                      })
+                     }
+
+                     $(document).on('keyup', '#search', function(){
+                      var query = $(this).val();
+                      fetch_customer_data(query);
+                     });
+                    });
+                    </script>
 @endsection
 
-@section('Script')
-   <script>
-    
-    fetch_customer_data();
-
-     $(document).ready(function(){
-
-         function fetch_customer_data(query == '')
-         {
-           $.ajax({
-               url:"",
-               method:'GET',
-               data:{query:query},
-               dataType:'json'
-               success:function(data)
-               {
-                $('tbody').html(data.table_data);
-               }
-
-           })
-         }
-
-      })
-
-      $document.on('keyup', '#search',function(){
-        var query = $(this).val();
-        fetch_customer_data(query);
-      })
-
-   </script>
-@endsection
